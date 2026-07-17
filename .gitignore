@@ -1,0 +1,49 @@
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors / IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Logs & temp
+*.log
+*.tmp
+tmp/
+.cache/
+
+# Agentic Tests — generated plan/report artifacts
+.agentic/
+*.agentic.plan.json
+
+# Node / JS-TS toolchains (Jest, Vitest, StrykerJS)
+node_modules/
+coverage/
+.nyc_output/
+.stryker-tmp/
+reports/mutation/
+
+# Python (pytest, coverage.py, mutmut)
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.mutmut-cache
+.venv/
+venv/
+
+# Java (Maven/Gradle, JaCoCo, PIT)
+target/
+build/
+.gradle/
+
+# C / C++ (gcov / llvm-cov)
+*.gcno
+*.gcda
+*.gcov
