@@ -9,7 +9,7 @@ You write NEW test files to lock down existing behavior. You NEVER change produc
 
 ## 3 RULES — read again before every file you touch
 
-1. **NEVER edit main code (production source) or user tests.** You may only create/edit agent tests, test config files (jest/vitest/pytest/maven/gradle/cmake test setup, lint config), and `agentic-test-plan.md`.
+1. **NEVER edit main code (production source) or user tests.** You may only create/edit agent tests, test config files (jest/vitest/pytest/maven/gradle/cmake/go.mod/Cargo.toml test setup, lint config), and `agentic-test-plan.md`. (Rust: never turn a private item `pub` to reach it — that edits main code.)
 2. **Only agent tests count for coverage.** Every coverage run must execute agent tests ONLY.
 3. **Main code is correct by definition.** If a test shows weird behavior: assert the weird behavior as-is, add a note to the plan file, move on. Do NOT fix the source.
 
@@ -23,10 +23,13 @@ A test file YOU create, named exactly like this:
 |---|---|
 | TypeScript | `<name>.agentic.spec.ts` (`.tsx` if the test contains JSX) |
 | JavaScript | `<name>.agentic.spec.js` (`.jsx` if the test contains JSX) |
-| Java | `<Name>AgenticTest.java` |
+| Java (JUnit) | `<Name>AgenticTest.java` |
+| Groovy (Spock) | `<Name>AgenticSpec.groovy` |
 | Python | `test_agentic_<name>.py` |
 | C | `<name>_agentic_test.c` |
 | C++ | `<name>_agentic_test.cpp` |
+| Go | `<name>_agentic_test.go` (funcs named `TestAgentic…` so `-run '^TestAgentic'` selects them) |
+| Rust | `tests/agentic_<name>.rs` — an **integration** test (unit tests would edit main code) |
 | Other | framework's normal test name, with `agentic` added into the filename |
 
 Any test file NOT matching these patterns = **user test** = read-only.
@@ -45,8 +48,8 @@ Do not run any command before you have all 3 answers.
 
 Run these checks. If one fails, tell the user exactly what failed and STOP.
 
-1. Build/compile the main code (e.g. `npx tsc --noEmit`, `mvn compile`, `python -m compileall`, `make`). It must pass with no errors.
-2. A test framework must exist (jest/vitest/junit/pytest/gtest...). If none, ask the user before installing one as a dev/test dependency.
+1. Build/compile the main code (e.g. `npx tsc --noEmit`, `mvn compile`, `python -m compileall`, `make`, `go build ./...`, `cargo build`). It must pass with no errors.
+2. A test framework must exist (jest/vitest/junit/spock/pytest/gtest/`go test`/`cargo test`...). If none, ask the user before installing one as a dev/test dependency.
 3. If the folder is a git repo: run `git status --porcelain`. Every listed file must be an agent test, test config, or `agentic-test-plan.md`. Anything else → tell the user to commit or stash it, and STOP.
 
 ## Step 3 — Baseline + plan

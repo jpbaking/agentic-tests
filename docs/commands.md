@@ -28,7 +28,7 @@ All commands are Cline workflows — type `/` and pick them from autocomplete. I
 /agentic-mutation-check.md [score% | report-only]
 ```
 
-**Requires:** all agent tests passing; clean git tree. **Tools:** StrykerJS (JS/TS), PIT (Java), mutmut (Python); C/C++ unsupported.
+**Requires:** all agent tests passing; clean git tree. **Tools:** StrykerJS (JS/TS), PIT (Java & Spock), mutmut (Python), gremlins (Go), cargo-mutants (Rust); C/C++ unsupported.
 **Does:** runs mutations against agent tests only → strengthens assertions to kill survivors (3 attempts each) → reports score before/after, unkilled mutants, and justified equivalents.
 **Never:** edits main code or user tests — mutation tools mutate source *temporarily and automatically*; the agent itself touches only agent tests.
 

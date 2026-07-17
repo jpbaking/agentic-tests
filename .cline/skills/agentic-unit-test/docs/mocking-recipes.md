@@ -16,7 +16,10 @@
 | React + Redux components/slices/thunks | `mocking-recipes/react-redux.md` (plus `js-ts.md` for boundaries) |
 | React Router, Context, custom hooks, async rendering | `mocking-recipes/react-general.md` |
 | Java (JUnit 5 + Mockito) | `mocking-recipes/java.md` |
+| Groovy (Spock built-in Mock/Stub/Spy) | `mocking-recipes/groovy-spock.md` |
 | Python (pytest + unittest.mock) | `mocking-recipes/python.md` |
 | C / C++ (GoogleTest/GoogleMock) | `mocking-recipes/c-cpp.md` |
+| Go (interfaces + httptest, testing helpers) | `mocking-recipes/go.md` |
+| Rust (traits + integration tests) | `mocking-recipes/rust.md` |
 
 Open ONLY the one file for your language.

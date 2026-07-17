@@ -57,7 +57,7 @@ Interrupted mid-run? Every skill writes a crash-proof plan file and resumes exac
 
 ## Built for weaker models, great with strong ones
 
-Every instruction is written so a small model can't wander: numbered steps with binary branches, fixed report formats, copy-paste templates for 6 languages, framework detection by file lookup, and a 3-attempt gate that reverts cleanly instead of thrashing. Recipes cover the classic weak-model tar pits — mocking time/network/filesystem, **React + Redux** (real store, never mock `useSelector`), **React Router & Context** (probe routes, never mock `useNavigate`), and async rendering.
+Every instruction is written so a small model can't wander: numbered steps with binary branches, fixed report formats, copy-paste templates for 9 languages, framework detection by file lookup, and a 3-attempt gate that reverts cleanly instead of thrashing. Recipes cover the classic weak-model tar pits — mocking time/network/filesystem, **React + Redux** (real store, never mock `useSelector`), **React Router & Context** (probe routes, never mock `useNavigate`), and async rendering.
 
 ## Language support
 
@@ -65,7 +65,10 @@ Every instruction is written so a small model can't wander: numbered steps with 
 |---|:-:|:-:|:-:|
 | TypeScript / JavaScript (Jest, Vitest) | ✅ | ✅ | ✅ StrykerJS |
 | Java (JUnit 5, Maven/Gradle) | ✅ | ✅ JaCoCo | ✅ PIT |
+| Groovy (Spock, Maven/Gradle) | ✅ | ✅ JaCoCo | ✅ PIT |
 | Python (pytest) | ✅ | ✅ coverage.py | ✅ mutmut |
+| Go (`go test`) | ✅ | ✅ `go test -cover` | ✅ gremlins |
+| Rust (`cargo test`) | ✅ | ✅ cargo-llvm-cov | ✅ cargo-mutants |
 | C / C++ (GoogleTest, CTest) | ✅ | ✅ gcov/llvm-cov | — |
 
 ## Install

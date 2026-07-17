@@ -9,8 +9,11 @@ Everything hinges on one filename convention:
 | TypeScript | `<name>.agentic.spec.ts` (`.tsx` with JSX) |
 | JavaScript | `<name>.agentic.spec.js` (`.jsx` with JSX) |
 | Java | `<Name>AgenticTest.java` |
+| Groovy (Spock) | `<Name>AgenticSpec.groovy` |
 | Python | `test_agentic_<name>.py` |
 | C / C++ | `<name>_agentic_test.c` / `.cpp` |
+| Go | `<name>_agentic_test.go` (funcs named `TestAgentic…`) |
+| Rust | `tests/agentic_<name>.rs` (integration test — never a `#[cfg(test)]` mod in source) |
 
 Files matching these patterns are **agent tests**: the suite creates, edits, strengthens, and (on request) deletes them. Every other test file is a **user test**: read-only, always, no exceptions.
 

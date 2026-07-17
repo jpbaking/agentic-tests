@@ -8,10 +8,12 @@ Run coverage so that **only agent tests execute** while coverage is still measur
 |---|---|
 | `jest.config.*`, or `"jest"` in package.json | Jest |
 | `vitest.config.*`, or vitest in package.json | Vitest |
-| `pom.xml` | Maven |
-| `build.gradle` / `build.gradle.kts` | Gradle |
+| `pom.xml` | Maven (JUnit **or** Spock) |
+| `build.gradle` / `build.gradle.kts` | Gradle (JUnit **or** Spock) |
 | `pytest.ini`, `pyproject.toml`, `setup.py` | Pytest |
 | `CMakeLists.txt`, `Makefile` (C/C++) | gcov/llvm-cov |
+| `go.mod` | Go (`go test -cover`) |
+| `Cargo.toml` | Rust (`cargo-llvm-cov`) |
 
 Copy the command as-is; only replace obvious placeholders like `<package>`.
 
@@ -48,6 +50,45 @@ If JaCoCo isn't configured, adding the `jacoco-maven-plugin` to the POM's test s
 ```bash
 ./gradlew test jacocoTestReport --tests '*AgenticTest'
 ```
+
+## Spock (Groovy, on Maven/Gradle)
+
+Spock runs on the JUnit platform and reports through JaCoCo exactly like JUnit — only the
+filter changes to the `*AgenticSpec` naming. Needs `spock-core` + the Groovy plugin on the
+test classpath (adding them as test config is allowed if absent).
+
+```bash
+mvn test jacoco:report -Dtest='*AgenticSpec'          # Maven
+./gradlew test jacocoTestReport --tests '*AgenticSpec' # Gradle
+```
+
+## Go (`go test -cover`)
+
+`go test` compiles every `*_test.go` in the package, so filter to agent tests by their
+`TestAgentic…` prefix:
+
+```bash
+go test ./... -run '^TestAgentic' -coverpkg=./... -coverprofile=coverage.out
+go tool cover -func=coverage.out   # per-func/per-file %, and total on the last line
+```
+
+- Per-file goal: read the per-function rows of `go tool cover -func`; every in-scope file must meet it.
+- `-coverpkg=./...` measures coverage against all main packages, not just the one under test.
+
+## Rust (`cargo-llvm-cov`)
+
+Agent tests are integration tests in `tests/agentic_*.rs`. Install once with
+`cargo install cargo-llvm-cov` (dev tooling). Run coverage over agent tests only by naming
+each integration target, and exclude unit tests in `src` with `--ignore-filename-regex`:
+
+```bash
+cargo llvm-cov --test agentic_<name> --summary-only          # one target
+cargo llvm-cov --test agentic_a --test agentic_b --summary-only   # several
+```
+
+- Private functions are unreachable from integration tests by design — if their coverage
+  can't be hit without editing main code, note it in the plan entry and move on.
+- Add `--lcov --output-path lcov.info` (or `--json`) for machine-readable per-file numbers.
 
 ## Pytest (Python)
 

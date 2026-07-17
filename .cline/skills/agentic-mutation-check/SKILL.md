@@ -29,7 +29,10 @@ Coverage says a line was *executed*; mutation testing says a change to that line
 | JS/TS (Jest/Vitest) | StrykerJS | `npx stryker run` with `testRunner` config's test filter set to `**/*.agentic.spec.*` |
 | Java (Maven) | PIT | `mvn org.pitest:pitest-maven:mutationCoverage -DtargetTests='*AgenticTest'` |
 | Java (Gradle) | PIT plugin | `pitest { targetTests = ['*AgenticTest'] }` |
+| Groovy/Spock (Maven/Gradle) | PIT | same as Java — PIT runs on the JUnit platform Spock uses; set the target-tests filter to `*AgenticSpec` |
 | Python | mutmut | `mutmut run --runner "python -m pytest -x -o python_files='test_agentic_*.py'"` |
+| Go | gremlins | `gremlins unleash ./...` — runs the package's `go test`; keep the tree agent-tests-only (or move user tests aside) so only agent tests judge the mutants |
+| Rust | cargo-mutants | `cargo mutants -- --test agentic_<name>` — the args after `--` restrict `cargo test` to the agent integration target(s) |
 | C/C++ | (no mature default) | Report "mutation testing not supported for this stack" and STOP |
 
 ## Step 3 — Baseline run
