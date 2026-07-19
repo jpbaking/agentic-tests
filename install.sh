@@ -100,8 +100,8 @@ GI_MARK="# Agentic Tests installer-managed agent adapters (generated; do not edi
 if has_text ".gitignore" "$GI_MARK"; then
   echo "  = kept existing .gitignore Agentic Tests block"
 else
+  if [ -s .gitignore ]; then printf '\n' >> .gitignore; fi
   {
-    [ -s .gitignore ] && printf '\n'
     printf '%s\n' "$GI_MARK"
     for skill in $SKILLS; do
       printf '.agents/skills/%s/\n.claude/skills/%s/\n' "$skill" "$skill"
