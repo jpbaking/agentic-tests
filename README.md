@@ -2,7 +2,7 @@
 
 > **Lock down your code. Refactor without fear.**
 
-A suite of [Cline](https://cline.bot) skills and slash-command workflows that turns any AI model — *even small, cheap ones* — into a disciplined test engineer. It generates unit tests that capture your code's **current behavior**, proves those tests actually hold with **mutation testing**, then lets you **refactor at full speed** with a safety net it never touches.
+A suite of portable [Agent Skills](https://agentskills.io/) — for Codex, Claude Code, Google Antigravity, and Cline — that turns any AI model — *even small, cheap ones* — into a disciplined test engineer. It generates unit tests that capture your code's **current behavior**, proves those tests actually hold with **mutation testing**, then lets you **refactor at full speed** with a safety net it never touches.
 
 Your code stays yours. Your tests stay honest. Your coverage number finally means something.
 
@@ -21,19 +21,21 @@ Every AI coding agent can *write tests*. Almost none can be *trusted* with them:
 
 ## What's inside
 
-| Skill | Slash command | What it does |
-|---|---|---|
-| 🏗️ **agentic-unit-test** | `/agentic-unit-test.md` | Generates tests to hit *your* coverage goal (line/branch/function, per-file or overall) |
-| 🧬 **agentic-mutation-check** | `/agentic-mutation-check.md` | Mutation-tests the safety net — proves the tests catch real changes |
-| ⚡ **agentic-refactor** | `/agentic-refactor.md` | Refactors/optimizes main code; the frozen test suite is the referee |
-| 🔁 **agentic-test-update** | `/agentic-test-update.md` | Re-locks tests after *intentional* behavior changes — one confirmation per diff |
-| 📊 — | `/agentic-coverage-report.md` | Where do the agent tests stand? Read-only report |
-| 🧹 — | `/agentic-test-clean.md` | Remove every agent test (with confirmation) |
+Six portable skills, one per job (canonical sources under [`skills/shared/`](skills/shared/)). Ask your agent to "use the `agentic-…` skill" — Claude Code, Antigravity, and Cline also expose each as a `/agentic-…` slash command; Codex uses a `$` skill mention.
+
+| Skill | What it does |
+|---|---|
+| 🏗️ **agentic-unit-test** | Generates tests to hit *your* coverage goal (line/branch/function, per-file or overall) |
+| 🧬 **agentic-mutation-check** | Mutation-tests the safety net — proves the tests catch real changes |
+| ⚡ **agentic-refactor** | Refactors/optimizes main code; the frozen test suite is the referee |
+| 🔁 **agentic-test-update** | Re-locks tests after *intentional* behavior changes — one confirmation per diff |
+| 📊 **agentic-coverage-report** | Where do the agent tests stand? Read-only report |
+| 🧹 **agentic-test-clean** | Remove every agent test (with confirmation) |
 
 ## 30-second start
 
 ```
-you:   /agentic-unit-test.md src/pricing.ts branch 90 per-file
+you:   /agentic-unit-test src/pricing.ts branch 90 per-file
 cline: ✅ preconditions… 📊 baseline 0%… 📝 plan written… 🏗️ generating…
        ─────────────────────────────────────
        Goal: branch ≥ 90% per-file — MET (93.4%)
@@ -43,8 +45,8 @@ cline: ✅ preconditions… 📊 baseline 0%… 📝 plan written… 🏗️ gen
 Then make it bulletproof, and use it:
 
 ```
-/agentic-mutation-check.md 85        ← prove the tests bite
-/agentic-refactor.md src/pricing.ts make it faster   ← refactor with the net up
+/agentic-mutation-check 85        ← prove the tests bite
+/agentic-refactor src/pricing.ts make it faster   ← refactor with the net up
 ```
 
 ## The guarantees
@@ -73,9 +75,21 @@ Every instruction is written so a small model can't wander: numbered steps with 
 
 ## Install
 
-Workspace-local (this repo): already done — `.cline/skills/` and `.clinerules/workflows/` are picked up automatically.
+**Preferred: let your AI agent install it.** An agent merges with whatever your project already has — existing `AGENTS.md` / `CLAUDE.md` content, ignore rules, same-named skills — instead of colliding with it. Paste this into your coding agent from the target project's root:
 
-Everywhere: copy `.cline/skills/*` → `~/.cline/skills/` and `.clinerules/workflows/*` → `~/Documents/Cline/Workflows/`.
+```
+Fetch https://raw.githubusercontent.com/jpbaking/agentic-tests/main/AGENT-INSTALL.md and follow its instructions exactly to install Agentic Tests into this project. Merge with — never blindly overwrite — any existing AGENTS.md, CLAUDE.md, or ignore files, and report every file you created or changed.
+```
+
+**Alternative: the script installers**, from the target project's root:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/jpbaking/agentic-tests/main/install.sh | sh
+```
+
+(Windows: `irm https://raw.githubusercontent.com/jpbaking/agentic-tests/main/install.ps1 | iex`)
+
+Both paths copy each skill from [`skills/shared/`](skills/shared/) to `.agents/skills/` (Codex, Antigravity, current Cline) and `.claude/skills/` (Claude Code), add a conditional `AGENTS.md` pointer plus a `CLAUDE.md` import when those files don't already cover it, and gitignore the generated skill copies (the root instruction files — and your generated agent tests — stay committable). On a fresh clone the gitignored skills are absent; re-run either path to regenerate them. See [Getting started](docs/getting-started.md) for details.
 
 ## Learn more
 

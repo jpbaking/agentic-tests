@@ -20,7 +20,7 @@ Coverage says a line was *executed*; mutation testing says a change to that line
 
 ## Step 2 — Preconditions (STOP if any fails)
 
-1. Agent tests exist and ALL pass. If not: tell the user to run `/agentic-unit-test.md` first, and STOP.
+1. Agent tests exist and ALL pass. If not: tell the user to use the `agentic-unit-test` skill first, and STOP.
 2. Git repo must be clean except agent tests / test config / plan files (`git status --porcelain`) — mutation tools rewrite source temporarily; a dirty tree risks losing work. STOP if dirty.
 3. A mutation tool is available or installable as a dev/test dependency (ask before installing):
 

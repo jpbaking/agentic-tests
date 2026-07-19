@@ -10,13 +10,13 @@ The mirror image of `agentic-unit-test`: there, tests change and code is frozen;
 ## 3 RULES
 
 1. **NEVER edit any test** — not agent tests, not user tests, not to "fix" a failure. A failing test means YOUR change is wrong.
-2. Behavior must not change. Refactor = same observable behavior, better internals. If a desired change WOULD alter behavior, STOP and tell the user to run `/agentic-test-update.md` after deciding intentionally.
+2. Behavior must not change. Refactor = same observable behavior, better internals. If a desired change WOULD alter behavior, STOP and tell the user to use the `agentic-test-update` skill after deciding intentionally.
 3. Work in small steps; every step ends with a fully green suite and a checkpoint commit.
 
 ## Step 1 — Ask the user
 
 1. "What should be refactored/optimized (files + goal: readability, performance, structure, ...)?"
-2. "Is current agent-test coverage of those files enough to refactor safely?" — run the agent-tests-only coverage command (recipes: `../agentic-unit-test/docs/coverage-recipes.md`) and show the per-file numbers for the target files. If any target file is poorly covered, recommend running `/agentic-unit-test.md <file>` first and let the user decide.
+2. "Is current agent-test coverage of those files enough to refactor safely?" — run the agent-tests-only coverage command (recipes: `../agentic-unit-test/docs/coverage-recipes.md`) and show the per-file numbers for the target files. If any target file is poorly covered, recommend using the `agentic-unit-test` skill on that file first and let the user decide.
 
 ## Step 2 — Preconditions (STOP if any fails)
 
