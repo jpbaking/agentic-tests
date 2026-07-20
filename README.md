@@ -2,7 +2,7 @@
 
 > **Lock down your code. Refactor without fear.**
 
-A suite of portable [Agent Skills](https://agentskills.io/) — for Codex, Claude Code, Google Antigravity, and Cline — that turns any AI model — *even small, cheap ones* — into a disciplined test engineer. It generates unit tests that capture your code's **current behavior**, proves those tests actually hold with **mutation testing**, then lets you **refactor at full speed** with a safety net it never touches.
+A suite of portable [Agent Skills](https://agentskills.io/) — for Codex, Claude Code, Google Antigravity, Cline, and Cursor — that turns any AI model — *even small, cheap ones* — into a disciplined test engineer. It generates unit tests that capture your code's **current behavior**, proves those tests actually hold with **mutation testing**, then lets you **refactor at full speed** with a safety net it never touches.
 
 Your code stays yours. Your tests stay honest. Your coverage number finally means something.
 
@@ -75,21 +75,13 @@ Every instruction is written so a small model can't wander: numbered steps with 
 
 ## Install
 
-**Preferred: let your AI agent install it.** An agent merges with whatever your project already has — existing `AGENTS.md` / `CLAUDE.md` content, ignore rules, same-named skills — instead of colliding with it. Paste this into your coding agent from the target project's root:
+Installation is agent-guided only — there are no install scripts. Paste this into your coding agent:
 
 ```
-Fetch https://raw.githubusercontent.com/jpbaking/agentic-tests/main/AGENT-INSTALL.md and follow its instructions exactly to install Agentic Tests into this project. Merge with — never blindly overwrite — any existing AGENTS.md, CLAUDE.md, or ignore files, and report every file you created or changed.
+Fetch https://raw.githubusercontent.com/jpbaking/agentic-tests/main/AGENT-INSTALL.md and follow its instructions exactly to install Agentic Tests. Merge with — never blindly overwrite — any existing files, and report every file you created or changed.
 ```
 
-**Alternative: the script installers**, from the target project's root:
-
-```sh
-curl -fsSL https://raw.githubusercontent.com/jpbaking/agentic-tests/main/install.sh | sh
-```
-
-(Windows: `irm https://raw.githubusercontent.com/jpbaking/agentic-tests/main/install.ps1 | iex`)
-
-Both paths copy each skill from [`skills/shared/`](skills/shared/) to `.agents/skills/` (Codex, Antigravity, current Cline) and `.claude/skills/` (Claude Code), add a conditional `AGENTS.md` pointer plus a `CLAUDE.md` import when those files don't already cover it, and gitignore the generated skill copies (the root instruction files — and your generated agent tests — stay committable). On a fresh clone the gitignored skills are absent; re-run either path to regenerate them. See [Getting started](docs/getting-started.md) for details.
+The agent acquires the sources itself (`git clone`, repo zip, or `gh`) and copies each skill from [`skills/shared/`](skills/shared/) into your **user-global** skill directories — `~/.agents/skills/` (Codex), `~/.claude/skills/` (Claude Code), `~/.gemini/config/skills/` (Antigravity), `~/.cline/skills/` (Cline); Cursor discovers the `~/.agents/skills/` copy natively. Nothing is added to your repos: the only per-project footprint is the generated agent tests themselves, which are committed (they're the safety net). The install is per-user; teammates install for themselves. See [Getting started](docs/getting-started.md) for details.
 
 ## Learn more
 

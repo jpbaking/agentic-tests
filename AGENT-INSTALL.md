@@ -1,30 +1,44 @@
 # Agentic Tests — agent-guided install
 
-You are an AI coding agent installing Agentic Tests into the project at the
-current working directory. Follow these steps exactly. This procedure is
-merge-aware: it never blindly overwrites files the project already owns, which
-is why it is preferred over the script installers.
+You are an AI coding agent installing Agentic Tests. Follow these steps
+exactly. This procedure is merge-aware — it never blindly overwrites files
+the user already owns — and it is the only install path; there are no
+install scripts.
+
+Agentic Tests is a **user-global** toolkit: its skills install once per user
+into each harness's global discovery paths. Nothing is installed into
+projects — the per-project footprint is the generated agent-test files the
+skills produce during use (`*.agentic.spec.*`, …), which are the project's
+safety net and **belong in version control** (never gitignore them).
+Project-level adapter install is an explicit opt-in (see the last section).
 
 Source repository: `https://github.com/jpbaking/agentic-tests`. If the user
 named a fork or tag, substitute it below.
 
-## 1. Survey before writing
+## 1. Acquire the sources
 
-1. Confirm you are at the target project's root.
-2. Note whether these exist: `AGENTS.md`, `CLAUDE.md`, `.gitignore`.
-3. Check for same-named `agentic-*` skills under `.agents/skills/`,
-   `.claude/skills/`, `.cline/skills/`, and the user-global equivalents
-   (`~/.agents/skills/`, `~/.claude/skills/`, `~/.cline/skills/`), plus
-   legacy `.clinerules/workflows/agentic-*.md` shortcut files. Report
-   anything you find; a global or legacy copy with the same name can shadow
-   or duplicate the project install.
+Obtain the sources in a temporary directory (never inside a project):
 
-## 2. Install the skills
+- `git clone --depth 1 https://github.com/jpbaking/agentic-tests <tmp>/agentic-tests`
+  (add `--branch <tag>` for a pinned tag), or
+- download and extract `https://github.com/jpbaking/agentic-tests/archive/refs/heads/main.zip`
+  (or the tarball `https://codeload.github.com/jpbaking/agentic-tests/tar.gz/main`), or
+- `gh repo clone jpbaking/agentic-tests <tmp>/agentic-tests`.
 
-Obtain the repository's `skills/shared/` tree — clone with
-`git clone --depth 1`, or download the tarball
-(`https://codeload.github.com/jpbaking/agentic-tests/tar.gz/main`). For each
-skill directory:
+Copy from this staging directory below; delete it when done.
+
+## 2. Survey before writing
+
+Check for same-named `agentic-*` skills in the global directories listed
+below and, if you are inside a project, under its `.agents/skills/`,
+`.claude/skills/`, `.cline/skills/`, plus legacy
+`.clinerules/workflows/agentic-*.md` shortcut files. Report anything you
+find; a project-level or legacy copy with the same name can shadow or
+duplicate the global install.
+
+## 3. Install the skills (byte-identical copies)
+
+For each skill directory:
 
 - `agentic-unit-test` (includes its `docs/` recipes and templates)
 - `agentic-mutation-check`
@@ -33,69 +47,65 @@ skill directory:
 - `agentic-coverage-report`
 - `agentic-test-clean`
 
-copy the whole directory (replacing any existing same-named directory) to
-BOTH `.agents/skills/<name>/` (Codex, Antigravity, current Cline) and
-`.claude/skills/<name>/` (Claude Code). The copies must be byte-identical.
-Never touch other skills.
+copy the whole directory from `skills/shared/<name>/` (replacing any
+existing same-named directory so retired resources cannot linger) to each
+selected harness's global skills directory (ask which harnesses if unclear;
+all four is a safe default):
 
-## 3. Bridge files — merge, never overwrite
+| Harness | Destination |
+| --- | --- |
+| Codex | `~/.agents/skills/<name>/` |
+| Claude Code | `~/.claude/skills/<name>/` |
+| Antigravity | `~/.gemini/config/skills/<name>/` |
+| Cline | `~/.cline/skills/<name>/` |
 
-- `AGENTS.md`: if it already mentions `agentic-unit-test`, leave it.
-  Otherwise create it (heading `# Project rules`) if missing, then append
-  this section once, preserving all existing content:
+Cursor needs **no separate copy**: it natively discovers `~/.agents/skills/`
+(and `~/.claude/skills/` / `~/.codex/skills/` as compatibility paths). Do
+not install to `~/.cursor/skills/` — that would create a duplicate.
 
-  > ## Agentic Tests
-  >
-  > If `.agents/skills/agentic-unit-test/` exists, this project uses the
-  > Agentic Tests skill suite (agentic-unit-test, agentic-mutation-check,
-  > agentic-refactor, agentic-test-update, agentic-coverage-report,
-  > agentic-test-clean): use the matching skill when its description applies,
-  > and never edit main code or user-written tests while doing test work. If
-  > the skills are missing (fresh clone — they are gitignored), re-run the
-  > installer from https://github.com/jpbaking/agentic-tests.
+All copies must be byte-identical across harnesses. Never touch other
+skills.
 
-- `CLAUDE.md`: if missing, create it containing only `@AGENTS.md`. If it
-  exists and already imports `AGENTS.md` or mentions agentic tests, leave it;
-  otherwise prepend the `@AGENTS.md` line once and preserve the rest.
-- If the project uses `GEMINI.md`, apply the same merge logic there.
+## 4. Validate and report
 
-## 4. Gitignore the generated adapters
-
-Add this block to `.gitignore` once (skip if the marker line already exists);
-create the file if missing and never delete existing rules:
-
-```gitignore
-# Agentic Tests installer-managed agent adapters (generated; do not edit or commit)
-.agents/skills/agentic-unit-test/
-.claude/skills/agentic-unit-test/
-.agents/skills/agentic-mutation-check/
-.claude/skills/agentic-mutation-check/
-.agents/skills/agentic-refactor/
-.claude/skills/agentic-refactor/
-.agents/skills/agentic-test-update/
-.claude/skills/agentic-test-update/
-.agents/skills/agentic-coverage-report/
-.claude/skills/agentic-coverage-report/
-.agents/skills/agentic-test-clean/
-.claude/skills/agentic-test-clean/
-```
-
-Do NOT gitignore `AGENTS.md` or `CLAUDE.md`, and do NOT gitignore the
-generated agent-test files themselves (`*.agentic.spec.*`, …) — those are the
-project's safety net and belong in version control. Because the skill
-adapters are gitignored, a fresh clone lacks them; the conditional bridge
-text degrades safely, and re-running this procedure (or `install.sh`)
-regenerates them.
-
-## 5. Validate and report
-
-1. Verify every `.agents/skills/agentic-*` directory is byte-identical to
-   its `.claude` twin, and that each `SKILL.md` frontmatter `name` matches
-   its directory.
-2. Report every file created, changed, or intentionally left alone, plus
-   collisions and legacy workflow files from step 1 (suggest deleting legacy
-   `.clinerules/workflows/agentic-*.md` shortcuts only with user approval).
-3. Tell the user the entry point: ask their agent to use the
+1. Verify every installed `agentic-*` directory is byte-identical across the
+   selected destinations and to the canonical source, and that each
+   `SKILL.md` frontmatter `name` matches its directory.
+2. Remove the temporary staging directory.
+3. Report every file created, changed, or intentionally left alone, plus
+   collisions and legacy workflow files from step 2 (suggest deleting legacy
+   `.clinerules/workflows/agentic-*.md` shortcuts or old gitignored
+   project-level adapters only with user approval).
+4. Tell the user the entry point: ask their agent to use the
    `agentic-unit-test` skill (then `agentic-mutation-check`,
    `agentic-refactor`, and the rest as needed). Codex: `$` mention;
-   Claude Code, Antigravity, Cline: `/agentic-unit-test`.
+   Claude Code, Antigravity, Cline: `/agentic-unit-test`. Remind them the
+   generated agent-test files are committed project files.
+
+## Project-level adapter install (opt-in only)
+
+Only on explicit user request: copy the six skill directories to the
+project's `.agents/skills/` and `.claude/skills/` (byte-identical), and
+optionally merge this section into the project's `AGENTS.md` (create it with
+a `# Project rules` heading if missing; leave it if it already mentions
+`agentic-unit-test`; preserve all existing content):
+
+> ## Agentic Tests
+>
+> This project uses the Agentic Tests skill suite (agentic-unit-test,
+> agentic-mutation-check, agentic-refactor, agentic-test-update,
+> agentic-coverage-report, agentic-test-clean): use the matching skill when
+> its description applies, and never edit main code or user-written tests
+> while doing test work. If the skills are not available, they are an
+> optional user-global install — offer to install them from
+> https://github.com/jpbaking/agentic-tests and proceed only if the user
+> agrees.
+
+For `CLAUDE.md`: if missing, create it containing only `@AGENTS.md`; if it
+exists and already imports `AGENTS.md` or mentions agentic tests, leave it;
+otherwise prepend the `@AGENTS.md` line once and preserve the rest. Apply
+the same merge logic to `GEMINI.md` if the project uses it. Whether the
+team commits or gitignores the adapters is the project's own policy — never
+touch the project's `.gitignore` yourself. Never gitignore the generated
+agent-test files; if existing ignore rules hide the adapters from a harness,
+report the exact pattern instead of changing it.

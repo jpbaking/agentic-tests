@@ -9,20 +9,13 @@
 
 ## Installation
 
-**Preferred — agent-guided.** Paste this into your coding agent from the target project's root; it merges with existing `AGENTS.md` / `CLAUDE.md` / ignore files instead of colliding with them:
+Installation is agent-guided only (no install scripts). Paste this into your coding agent:
 
 ```
-Fetch https://raw.githubusercontent.com/jpbaking/agentic-tests/main/AGENT-INSTALL.md and follow its instructions exactly to install Agentic Tests into this project. Merge with — never blindly overwrite — any existing AGENTS.md, CLAUDE.md, or ignore files, and report every file you created or changed.
+Fetch https://raw.githubusercontent.com/jpbaking/agentic-tests/main/AGENT-INSTALL.md and follow its instructions exactly to install Agentic Tests. Merge with — never blindly overwrite — any existing files, and report every file you created or changed.
 ```
 
-**Script alternative**, from the target project's root:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/jpbaking/agentic-tests/main/install.sh | sh
-# Windows: irm https://raw.githubusercontent.com/jpbaking/agentic-tests/main/install.ps1 | iex
-```
-
-Both paths copy the six skills from the repo's canonical `skills/shared/` into `.agents/skills/` (Codex, Antigravity, current Cline) and `.claude/skills/` (Claude Code), add conditional `AGENTS.md` / `CLAUDE.md` pointers, and gitignore the installed skill copies. On a fresh clone the skills are therefore absent — re-run either path to regenerate them. Claude Code, Antigravity, and Cline then expose each skill as a `/agentic-*` slash command; Codex uses a `$` skill mention; and every harness can activate a skill implicitly when your request matches its description.
+The agent acquires the sources itself (`git clone`, repo zip, or `gh`) and copies the six skills from the canonical `skills/shared/` into your **user-global** skill directories — `~/.agents/skills/` (Codex), `~/.claude/skills/` (Claude Code), `~/.gemini/config/skills/` (Antigravity), `~/.cline/skills/` (Cline). Nothing is added to your repos, and the install is per-user — teammates install for themselves; re-run anytime to update. Claude Code, Antigravity, and Cline then expose each skill as a `/agentic-*` slash command; Codex uses a `$` skill mention; and every harness can activate a skill implicitly when your request matches its description.
 
 ## Your first run
 
